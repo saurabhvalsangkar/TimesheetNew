@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!-- Configurer that replaces ${...} placeholders with values from a properties file -->
+<!-- (in this case, JDBC-related settings for the dataSource definition below) -->
+<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+  <property name="location">
+    <value>/com/cts/timesheet/resources/timesheet.properties</value>
+   </property>
+</bean>
+
+<!-- Local DataSource that works in any environment -->
+<!-- Note that DriverManagerDataSource does not pool; it is not intended for production -->
+
+<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+  <property name="driverClassName">
+    <value>${datasource.jdbc.driverClassName}</value>
+  </property>
+  <property name="url">
+     <value>${datasource.jdbc.url}</value>
+  </property>
+  <property name="username">
+     <value>${datasource.jdbc.username}</value>
+  </property>
+  <property name="password">
+    <value>${datasource.jdbc.password}</value>
+   </property>
+</bean>
+
+
+<!-- JNDI DataSource for J2EE environments -->
+
+<!-- Hibernate SessionFactory -->
+
+ <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+   <property name="dataSource">
+     <ref bean="dataSource"/>
+   </property>
+   <property name="annotatedClasses">
+     <list>
+       <value>com.cts.timesheet.model.TimeSheetUser</value>
+     </list>
+   </property>
+   <!--<property name="annotatedPackages">
+     <list>
+       <value>test.package</value>
+     </list>
+   </property> -->
+   <property name="hibernateProperties">
+     <props>
+      <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+      <prop key="hibernate.show_sql">true</prop>
+      <prop key="hibernate.current_session_context_class">thread</prop>
+      <prop key="hibernate.hbm2ddl.auto">update</prop>
+     </props>
+   </property>
+
+</bean>
+
+
+<!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA) -->
+<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+ <property name="sessionFactory">
+   <ref local="sessionFactory"/>
+ </property>
+</bean>
+
+   <bean id="userDaoImpl" class="com.cts.timesheet.dao.UserDaoImpl">
+	          <property name="sessionFactory" ref="sessionFactory"></property>
+   </bean> 
+
+
+</beans>

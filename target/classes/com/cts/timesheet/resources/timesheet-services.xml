@@ -1,0 +1,70 @@
+<!-- <?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+   
+       *******************************************************
+       Transaction set up
+
+       base transaction defintion, defintions that extend this will have all methods be PROPAGATION_REQUIRED by default 
+       *******************************************************
+      
+   <bean id="txProxyTemplate" abstract="true" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+      <property name="transactionManager">
+         <ref bean="transactionManager"/>
+      </property>
+      <property name="transactionAttributes">
+         <props>
+            <prop key="*">PROPAGATION_REQUIRED</prop>
+         </props>
+      </property>
+   </bean>
+
+Creating Transactional Proxy for all Service Bean Declaration 
+
+  <bean id="deviceConfiguratioService" parent="txProxyTemplate">
+    <property name="target">
+     <bean class="com.abc.bdm.services.DeviceConfigurationServiceImpl"> 
+      <property name="deviceConfigurationDao">
+        <ref local="deviceConfigurationDao"/>      
+      </property>
+     </bean>
+    </property>  
+  </bean> 
+  
+  <bean id="serverConfigurationService" parent="txProxyTemplate">
+    <property name="target">
+     <bean class="com.abc.bdm.services.ServerConfigurationServiceImpl" > 
+      <property name="serverConfigurationDao">
+        <ref local="serverConfigurationDao"/> 
+      </property>  
+     </bean>
+    </property>
+  </bean>  
+ 
+  <bean id="bookingDetailsService" parent="txProxyTemplate">
+    <property name="target">
+     <bean class="com.abc.bdm.services.BookingDetailsServiceImpl" > 
+      <property name="bookingDetailsDao">
+        <ref local="bookingDetailsDao"/> 
+      </property>    
+     </bean>
+    </property>
+  </bean> 
+ 
+ 
+Creating  Dao Objects
+
+  <bean id="deviceConfigurationDao" class="com.abc.bdm.dao.hibernate.DeviceConfigurationDaoImpl">
+  </bean>
+   
+  <bean id="serverConfigurationDao" class="com.abc.bdm.dao.hibernate.ServerConfigurationDaoImpl">
+  </bean>
+  
+  <bean id="bookingDetailsDao" class="com.abc.bdm.dao.hibernate.BookingDetailsDaoImpl">
+  </bean> 
+
+</beans>
+ -->
