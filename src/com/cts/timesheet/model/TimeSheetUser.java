@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
+//Another user edited the file
 @Entity
 @Table(name="TIMESHEET_USERS")
 public class TimeSheetUser implements User {
