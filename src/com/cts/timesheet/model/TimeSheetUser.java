@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
+//This is the test comment for GIT
 @Entity
 @Table(name="TIMESHEET_USERS")
 public class TimeSheetUser implements User {
